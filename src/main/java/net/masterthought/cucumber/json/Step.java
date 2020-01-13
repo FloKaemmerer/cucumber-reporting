@@ -15,6 +15,7 @@ public class Step implements Resultsable {
     // Start: attributes from JSON file report
     private String name = null;
     private final String keyword = null;
+    private Integer line = null;
     // create empty Result for all cases where step has no result
     // - happens for old or different cucumber implementation of the library
     private final Result result = new Result();
@@ -41,9 +42,10 @@ public class Step implements Resultsable {
     private Status afterStatus;
 
     public Row[] getRows() {
-        if (ArrayUtils.getLength(arguments) == 1) {
+        int argumentsSize = ArrayUtils.getLength(arguments);
+        if (argumentsSize == 1) {
             return arguments[0].getRows();
-        } else if (ArrayUtils.getLength(arguments) > 1) {
+        } else if (argumentsSize > 1) {
             // if this happens then proper support must be added
             throw new UnsupportedOperationException("'arguments' length should be equal to 1");
         } else {
@@ -58,6 +60,10 @@ public class Step implements Resultsable {
     public String getKeyword() {
         // step keywords have additional space at the end of string, while others don't
         return keyword.trim();
+    }
+
+    public Integer getLine() {
+        return line;
     }
 
     @Override
@@ -90,11 +96,11 @@ public class Step implements Resultsable {
     public Hook[] getBefore() {
         return before;
     }
-    
+
     public Hook[] getAfter() {
         return after;
     }
-    
+
     public Status getBeforeStatus() {
         return beforeStatus;
     }
